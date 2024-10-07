@@ -47,7 +47,7 @@
       if (size > 1) {
         return new ol.style.Style({
           image: new ol.style.Icon({
-            src: 'icons/cluster-icon2.png',
+            src: 'icons/cluster-icon.png',
             scale: 0.45, 
             anchor: [0.5, 0.8], 
           }),
