@@ -130,6 +130,12 @@
       }
     });
 
+    map.on('movestart', () => {
+      const infoPanel = document.getElementById('info');
+      infoPanel.classList.remove('show');
+      infoPanel.classList.add('hide');
+    });
+
     map.on('pointermove', evt => {
       const pixel = map.getEventPixel(evt.originalEvent);
       const hitMarker = map.forEachFeatureAtPixel(pixel, function (feature) {
@@ -138,13 +144,6 @@
       });
       
       map.getTargetElement().style.cursor = hitMarker ? 'pointer' : '';
-    });
-
-
-    map.on('movestart', () => {
-      const infoPanel = document.getElementById('info');
-      infoPanel.classList.remove('show');
-      infoPanel.classList.add('hide');
     });
 
     map.getView().on('change:resolution', () => {
@@ -162,7 +161,6 @@
         });
       }
     );
-
 
     kurClusterLayer.getSource().on('addfeature', function(evt) {
       const regionPolygon = new ol.geom.Polygon([kurortnyDistrict.coordinates]).transform('EPSG:4326', 'EPSG:3857');
