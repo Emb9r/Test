@@ -12,6 +12,20 @@ html, body {
   position: relative; 
 }
 
+@media (max-width: 768px) {
+  #info {
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0; 
+    max-height: 50%; 
+    overflow-y: auto; 
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 15px; 
+  }
+}
+
 #info {
   position: fixed; 
   top: 0;
