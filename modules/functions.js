@@ -110,8 +110,10 @@ const functions = {
   getClusterRadius: function(zoom) {
     if (zoom < 10) {
       return 1000; 
-    } else if (zoom < 12) {
+    } else if (zoom < 11) {
       return 700; 
+    } else if (zoom < 13) {
+      return 450; 
     } else if (zoom < 16) {
       return 200; 
     } else {
