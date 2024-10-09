@@ -64,29 +64,47 @@
     
     const mapLayer = new ol.layer.Tile({ source: new ol.source.OSM() });
     const boundaryLayer = new ol.layer.Vector({ source: polygonSource });
+    const admClusterLayer = new ol.layer.Vector({ source: clusterSources[admiralteyskyDistrict.name], style: clusterStyle });
+    const centClusterLayer = new ol.layer.Vector({ source: clusterSources[centralnyDistrict.name], style: clusterStyle });
+    const frunClusterLayer = new ol.layer.Vector({ source: clusterSources[frunzenskyDistrict.name], style: clusterStyle });
+    const kaliClusterLayer = new ol.layer.Vector({ source: clusterSources[kalininskyDistrict.name], style: clusterStyle });
+    const kirClusterLayer = new ol.layer.Vector({ source: clusterSources[kirovskyDistrict.name], style: clusterStyle });
+    const kolClusterLayer = new ol.layer.Vector({ source: clusterSources[kolpinskyDistrict.name], style: clusterStyle });
+    const kragClusterLayer = new ol.layer.Vector({ source: clusterSources[krasnogvardeiskyDistrict.name], style: clusterStyle });
+    const krasClusterLayer = new ol.layer.Vector({ source: clusterSources[krasnoselskyDistrict.name], style: clusterStyle });
+    const kronClusterLayer = new ol.layer.Vector({ source: clusterSources[kronstadtskyDistrict.name], style: clusterStyle });
+    const kurClusterLayer = new ol.layer.Vector({ source: clusterSources[kurortnyDistrict.name], style: clusterStyle });
+    const moslusterLayer = new ol.layer.Vector({ source: clusterSources[moskovskyDistrict.name], style: clusterStyle });
+    const nevClusterLayer = new ol.layer.Vector({ source: clusterSources[nevskyDistrict.name], style: clusterStyle });
+    const petdClusterLayer = new ol.layer.Vector({ source: clusterSources[petrodvorcovyDistrict.name], style: clusterStyle });
+    const petgClusterLayer = new ol.layer.Vector({ source: clusterSources[petrogradskyDistrict.name], style: clusterStyle });
+    const primClusterLayer = new ol.layer.Vector({ source: clusterSources[primorskyDistrict.name], style: clusterStyle });
+    const pushClusterLayer = new ol.layer.Vector({ source: clusterSources[pushkinskyDistrict.name], style: clusterStyle });
+    const vasClusterLayer = new ol.layer.Vector({ source: clusterSources[vasileostrovskyDistrict.name], style: clusterStyle });
+    const vybClusterLayer = new ol.layer.Vector({ source: clusterSources[vyborgskyDistrict.name], style: clusterStyle });
 
     const map = new ol.Map({
       target: 'map',
       layers: [mapLayer, 
                boundaryLayer, 
-               new ol.layer.Vector({ source: clusterSources[admiralteyskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[centralnyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[frunzenskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[kalininskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[kirovskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[kolpinskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[krasnogvardeiskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[krasnoselskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[kronstadtskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[kurortnyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[moskovskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[nevskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[petrodvorcovyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[petrogradskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[primorskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[pushkinskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[vasileostrovskyDistrict.name], style: clusterStyle }),
-               new ol.layer.Vector({ source: clusterSources[vyborgskyDistrict.name], style: clusterStyle })
+               admClusterLayer,
+               centClusterLayer,
+               frunClusterLayer,
+               kaliClusterLayer,
+               kirClusterLayer,
+               kolClusterLayer,
+               kragClusterLayer,
+               krasClusterLayer,
+               kronClusterLayer,
+               kurClusterLayer,
+               moslusterLayer,
+               nevClusterLayer,
+               petdClusterLayer,
+               petgClusterLayer,
+               primClusterLayer,
+               pushClusterLayer,
+               vasClusterLayer,
+               vybClusterLayer
               ],
       view: new ol.View({
         projection: 'EPSG:3857',
@@ -144,6 +162,18 @@
         });
       }
     );
+
+
+    kurClusterLayer.getSource().on('addfeature', function(evt) {
+      const regionPolygon = new ol.geom.Polygon([kurortnyDistrict.coordinates]).transform('EPSG:4326', 'EPSG:3857');
+      const clusterGeometry = evt.feature.getGeometry();
+      const clusterCoordinates = clusterGeometry.getCoordinates();  
+
+      if (!regionPolygon.intersectsCoordinate(clusterCoordinates)) {
+        const polygonCentr = ol.proj.transform([29.864878, 60.181222], 'EPSG:4326', 'EPSG:3857');
+        clusterGeometry.setCoordinates(polygonCentr);
+      }
+    });
     
     function updateDistrictVisibility(selectedDistrict) {
       const features = boundaryLayer.getSource().getFeatures();
